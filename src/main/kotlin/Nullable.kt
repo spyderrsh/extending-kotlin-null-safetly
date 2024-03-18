@@ -1,8 +1,38 @@
 package dev.ikeze.kotlinnullsafety
 
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
+
 class NullableScope {
     fun<T> T?.bind(): T {
         return  this ?: throw NullableException()
+    }
+
+    @OptIn(ExperimentalContracts::class)
+    fun<T1> bind(p1: T1?) {
+        contract {
+            returns() implies (p1 != null)
+        }
+        p1.bind()
+    }
+
+    @OptIn(ExperimentalContracts::class)
+    fun<T1, T2> bind(p1: T1?, p2: T2?) {
+        contract {
+            returns() implies (p1 != null && p2 != null)
+        }
+        p1.bind()
+        p2.bind()
+    }
+
+    @OptIn(ExperimentalContracts::class)
+    fun<T1, T2, T3> bind(p1: T1?, p2: T2?, p3: T3?) {
+        contract {
+            returns() implies (p1 != null && p2 != null && p3 != null)
+        }
+        p1.bind()
+        p2.bind()
+        p3.bind()
     }
 }
 

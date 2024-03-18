@@ -108,6 +108,22 @@ class NullableTest {
     }
 
     @Test
+    fun `nullable scope evaluates to value if no null value was bound with contracts`() {
+        var v1: String? = "value"
+        val v2: Int? = 2
+        var count = 0
+        val v3 = nullable {
+            count++
+            bind(v1,v2)
+            count++
+            v1.slice(0..v2)
+        }
+
+        assertEquals(count, 2)
+        assertEquals(v3, "val")
+    }
+
+    @Test
     fun `nullable scope does lets exception to be thrown`() {
 
         val v1: String? = null
